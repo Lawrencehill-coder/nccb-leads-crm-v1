@@ -3012,7 +3012,7 @@ function postToBackend(payload){
     body: JSON.stringify(payload)
   })
     .then(function(r){ return r.json(); })
-    .catch(function(){ return { ok: false }; });
+    .catch(function(){ return { ok: false, error: 'CRM authentication service is unreachable. Please contact the administrator.' }; });
 }
 
 function refreshCurrentPage(){
@@ -3047,9 +3047,12 @@ function initLoginScreen(){
     // rep in this list — otherwise falls through to the normal manual
     // login exactly as before.
     var creds = window.__leadCrmSsoCreds || {};
-    if (creds.name && creds.pin && reps.some(function(r){ return r.name === creds.name; })){
-      sel.value = creds.name;
-      document.getElementById('crmLoginPin').value = creds.pin;
+    // Match SSO identities without depending on capitalization or extra spaces.
+    var normalizedName = function(v){ return String(v || '').trim().replace(/\\s+/g, ' ').toLowerCase(); };
+    var matchedRep = creds.name && reps.find(function(r){ return normalizedName(r.name) === normalizedName(creds.name); });
+    if (matchedRep && creds.pin){
+      sel.value = matchedRep.name;
+      document.getElementById('crmLoginPin').value = String(creds.pin).trim();
       doLogin();
     }
   });
