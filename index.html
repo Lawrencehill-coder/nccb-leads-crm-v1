@@ -920,17 +920,17 @@
 <div class="app-shell" id="appShell">
 <nav>
   <div class="brand">NCCB LEAD CRM<small>Workflow · Scripts · Compliance</small></div>
-  <button class="tabbtn active" onclick="showTab('leadsLive', this)">Leads (Live)</button>
-  <button class="tabbtn" onclick="showTab('overview', this)">Overview &amp; Contents</button>
-  <button class="tabbtn" onclick="showTab('howto', this)">How to Use</button>
-  <button class="tabbtn" onclick="showTab('glossary', this)">Definitions</button>
-  <button class="tabbtn" onclick="showTab('scripts', this)">Call Scripts</button>
-  <button class="tabbtn" onclick="showTab('tactics', this)">Daily Training &amp; Cadence</button>
-  <button class="tabbtn" onclick="showTab('compliance', this)">Compliance References</button>
-  <button class="tabbtn" onclick="showTab('kpi', this)">KPI Dashboard</button>
-  <button class="tabbtn" id="superAdminTabBtn" style="display:none;" onclick="showTab('superadmin', this)">Super Admin Only</button>
+  <button class="tabbtn active" data-crm-tab="leadsLive">Leads (Live)</button>
+  <button class="tabbtn" data-crm-tab="overview">Overview &amp; Contents</button>
+  <button class="tabbtn" data-crm-tab="howto">How to Use</button>
+  <button class="tabbtn" data-crm-tab="glossary">Definitions</button>
+  <button class="tabbtn" data-crm-tab="scripts">Call Scripts</button>
+  <button class="tabbtn" data-crm-tab="tactics">Daily Training &amp; Cadence</button>
+  <button class="tabbtn" data-crm-tab="compliance">Compliance References</button>
+  <button class="tabbtn" data-crm-tab="kpi">KPI Dashboard</button>
+  <button class="tabbtn" id="superAdminTabBtn" style="display:none;" data-crm-tab="superadmin">Super Admin Only</button>
   <div class="whoami" id="whoamiText"></div>
-  <a class="logout-link" onclick="doLogout()">Log Out</a>
+  <a class="logout-link" id="crmLogoutButton">Log Out</a>
 </nav>
 
 <main>
@@ -3035,6 +3035,11 @@ window.leadCrmInit = function(){
   var dismissButton = document.getElementById('crmSessionDismissButton');
   if (clockInButton) clockInButton.addEventListener('click', confirmStartSession);
   if (dismissButton) dismissButton.addEventListener('click', dismissStartSession);
+  document.querySelectorAll('#leadCrmMount [data-crm-tab]').forEach(function(btn){
+    btn.addEventListener('click', function(){ showTab(btn.getAttribute('data-crm-tab'), btn); });
+  });
+  var crmLogoutButton = document.getElementById('crmLogoutButton');
+  if (crmLogoutButton) crmLogoutButton.addEventListener('click', function(){ location.reload(); });
   initLoginScreen();
 };
 
