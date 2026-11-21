@@ -901,8 +901,8 @@
     <label>Your Name</label>
     <select id="loginName"><option>Loading…</option></select>
     <label>PIN</label>
-    <input type="password" id="crmLoginPin" placeholder="Enter your PIN" onkeyup="if(event.key==='Enter')doLogin()">
-    <button class="btn" onclick="doLogin()">Log In</button>
+    <input type="password" id="crmLoginPin" placeholder="Enter your PIN">
+    <button class="btn" id="crmLoginButton" type="button">Log In</button>
     <div id="loginError"></div>
   </div>
 </div>
@@ -3027,6 +3027,10 @@ function refreshCurrentPage(){
 window.leadCrmInit = function(){
   if (window.__leadCrmInitStarted) return; // never initialize twice
   window.__leadCrmInitStarted = true;
+  var loginButton = document.getElementById('crmLoginButton');
+  var loginPin = document.getElementById('crmLoginPin');
+  if (loginButton) loginButton.addEventListener('click', doLogin);
+  if (loginPin) loginPin.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); doLogin(); } });
   initLoginScreen();
 };
 
