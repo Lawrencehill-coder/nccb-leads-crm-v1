@@ -912,8 +912,8 @@
     <h2>Start Your Work Session?</h2>
     <p>You're not currently clocked in. Starting your session now keeps your time accurately tracked from
     the moment you log in.</p>
-    <button class="btn" onclick="confirmStartSession()">Clock In Now</button>
-    <button class="btn secondary" onclick="dismissStartSession()">Not Now</button>
+    <button class="btn" id="crmSessionClockInButton" type="button">Clock In Now</button>
+    <button class="btn secondary" id="crmSessionDismissButton" type="button">Not Now</button>
   </div>
 </div>
 
@@ -3031,6 +3031,10 @@ window.leadCrmInit = function(){
   var loginPin = document.getElementById('crmLoginPin');
   if (loginButton) loginButton.addEventListener('click', doLogin);
   if (loginPin) loginPin.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); doLogin(); } });
+  var clockInButton = document.getElementById('crmSessionClockInButton');
+  var dismissButton = document.getElementById('crmSessionDismissButton');
+  if (clockInButton) clockInButton.addEventListener('click', confirmStartSession);
+  if (dismissButton) dismissButton.addEventListener('click', dismissStartSession);
   initLoginScreen();
 };
 
