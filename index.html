@@ -3871,6 +3871,33 @@ function saveAdminAssign(leadId, newRep, hintId){
     });
 }
 
+/* ===== NCCB Lead CRM HOTFIX v1 (LH, 11/23/2026) =====
+   Why: the Lead CRM code runs inside a private wrapper, but its buttons use
+   inline onclick/onchange attributes that look for global functions. This
+   block publishes those functions so every button works again, and scopes
+   sub-tab switching to its own panel (Call Scripts vs KPI). */
+showSubtab = function(id, btn){
+  var root = (btn && btn.closest('.panel')) || document;
+  root.querySelectorAll('.subpanel').forEach(function(p){ p.classList.remove('active'); });
+  var target = document.getElementById(id); if (target) target.classList.add('active');
+  root.querySelectorAll('.subtabbtn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+};
+Object.assign(window, {
+  showTab: showTab, showTabByName: showTabByName, showSubtab: showSubtab, showKpiSubtab: showKpiSubtab,
+  applyFilters: applyFilters, clearFilters: clearFilters, toggleFilters: toggleFilters,
+  clearSearch: clearSearch, doSearchLeads: doSearchLeads, nextPage: nextPage, prevPage: prevPage,
+  onHideWorkedTodayChange: onHideWorkedTodayChange,
+  closeDetail: closeDetail, saveField: saveField, submitNote: submitNote,
+  pushAppointmentFromPanel: pushAppointmentFromPanel, loadDetailScript: loadDetailScript,
+  doClockIn: doClockIn, doClockOut: doClockOut,
+  bumpProdField: bumpProdField, saveProduction: saveProduction, generateReport: generateReport,
+  loadRankings: loadRankings, loadTeamByRep: loadTeamByRep, loadWeeklyBreakdown: loadWeeklyBreakdown,
+  onTeamRepChange: onTeamRepChange, onAdminRepChange: onAdminRepChange,
+  doAdminSearch: doAdminSearch, saveAdminAssign: saveAdminAssign
+});
+/* ===== end HOTFIX v1 ===== */
+
 })();
 
 /* ===== Sales Command Center (real, embedded) ===== */
